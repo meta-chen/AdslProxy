@@ -20,7 +20,6 @@ class SendEmail:
     # 下面的发件人，收件人是用于邮件传输的。
     smtpserver = 'smtp.163.com'
     username = 'meta_chen@163.com'
-    password = os.getenv('163AUTHCODE')
     sender = 'meta_chen@163.com'
     # receiver='XXX@126.com'
     # 收件人为多个收件人
@@ -41,6 +40,9 @@ class SendEmail:
     msg['To'] = ";".join(receiver)
     # msg['Date']='2012-3-16'
     oldip = '114.250.102.239'
+
+    def __init__(self,password):
+        self.password = password
 
     def mailsender(self):
         '''
@@ -71,12 +73,19 @@ class SendEmail:
         smtp.quit()
         return True
 
+    def timeJob(self):
+        '''
+        定时检查ip
+        :return:
+        '''
+        scheduler = BlockingScheduler()
+        # 每2小时触发
+        scheduler.add_job(self.mailsender, 'interval', hours=2)
+        scheduler.start()
+
 def main():
-    scheduler = BlockingScheduler()
     sender = SendEmail()
-    # 每2小时触发
-    scheduler.add_job(sender.mailsender, 'interval', hours=2)
-    scheduler.start()
+    sender.timeJob()
 
 
 if __name__ == '__main__':
