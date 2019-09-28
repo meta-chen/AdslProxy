@@ -1,6 +1,7 @@
 from adslproxy import RedisClient
-
-client = RedisClient(host='', password='')
+import os
+passwd = os.getenv('REDISPASSWORD')
+client = RedisClient(host='', password=passwd)
 random = client.random()
 all = client.all()
 names = client.names()

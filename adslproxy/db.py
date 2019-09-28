@@ -2,6 +2,7 @@
 import redis
 import random
 from adslproxy.config import *
+from retrying import retry
 
 
 class RedisClient(object):
@@ -61,7 +62,8 @@ class RedisClient(object):
         :return: 代理列表
         """
         return self.db.hvals(self.proxy_key)
-    
+
+    @retry(stop_max_delay=24000,wait_fixed=2000)
     def random(self):
         """
         随机获取代理
