@@ -84,7 +84,8 @@ class SendEmail:
         scheduler.start()
 
 def main():
-    sender = SendEmail()
+    emailPassword = os.getenv('163AUTHCODE')
+    sender = SendEmail(emailPassword)
     sender.timeJob()
 
 
