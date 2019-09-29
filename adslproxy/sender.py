@@ -76,11 +76,20 @@ class Sender():
                 self.remove_proxy()
             except:
                 while True:
-                    (status, output) = subprocess.getstatusoutput(ADSL_BASH)
+                    # (status, output) = subprocess.getstatusoutput(ADSL_BASH)
+                    (status, output) = subprocess.getstatusoutput(ADSL_BASH_STOP)
+                    if status == 0:
+                        time.sleep(3)
+                    (status, output) = subprocess.getstatusoutput(ADSL_BASH_START)
                     if status == 0:
                         self.remove_proxy()
                         break
-            (status, output) = subprocess.getstatusoutput(ADSL_BASH)
+            # adsl-stop;adsl-start间隔太短会造成IP不能改变
+            # (status, output) = subprocess.getstatusoutput(ADSL_BASH)
+            (status, output) = subprocess.getstatusoutput(ADSL_BASH_STOP)
+            if status == 0:
+                time.sleep(3)
+            (status, output) = subprocess.getstatusoutput(ADSL_BASH_START)
             if status == 0:
                 print('ADSL Successfully')
                 ip = self.get_ip()

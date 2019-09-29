@@ -7,6 +7,8 @@ ADSL_ERROR_CYCLE = 5
 
 # ADSL命令
 ADSL_BASH = 'adsl-stop;adsl-start'
+ADSL_BASH_START = 'adsl-start'
+ADSL_BASH_STOP = 'adsl-stop'
 
 # 代理运行端口
 PROXY_PORT = 8888
