@@ -6,6 +6,7 @@ from requests.exceptions import ConnectionError, ReadTimeout
 from adslproxy.db import RedisClient
 from adslproxy.config import *
 import platform
+from tqdm import tqdm
 
 if platform.python_version().startswith('2.'):
     import commands as subprocess
@@ -82,7 +83,8 @@ class Sender():
                     # (status, output) = subprocess.getstatusoutput(ADSL_BASH)
                     (status, output) = subprocess.getstatusoutput(ADSL_BASH_STOP)
                     if status == 0:
-                        time.sleep(3)
+                        print("adsl-start after {} seconds".format(ADSL_STEP))
+                        time.sleep(ADSL_STEP)
                     (status, output) = subprocess.getstatusoutput(ADSL_BASH_START)
                     if status == 0:
                         self.remove_proxy()
@@ -91,7 +93,8 @@ class Sender():
             # (status, output) = subprocess.getstatusoutput(ADSL_BASH)
             (status, output) = subprocess.getstatusoutput(ADSL_BASH_STOP)
             if status == 0:
-                time.sleep(3)
+                print("adsl-start after {} seconds".format(ADSL_STEP))
+                time.sleep(ADSL_STEP)
             (status, output) = subprocess.getstatusoutput(ADSL_BASH_START)
             if status == 0:
                 print('ADSL Successfully')
@@ -104,7 +107,12 @@ class Sender():
                         print('Valid Proxy')
                         self.set_proxy(proxy)
                         print('Sleeping')
-                        time.sleep(ADSL_CYCLE)
+                        pbar = tqdm(total=ADSL_CYCLE)
+                        for i in range(int(ADSL_CYCLE/2)):
+                            time.sleep(2)
+                            pbar.update(2)
+                        pbar.close()
+                        # time.sleep(ADSL_CYCLE)
                     else:
                         print('Invalid Proxy')
                 else:
