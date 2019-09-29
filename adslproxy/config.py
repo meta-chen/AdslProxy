@@ -1,7 +1,7 @@
 # coding=utf-8
 # 拨号间隔
 ADSL_CYCLE = 300
-ADSL_STEP = 5
+ADSL_STEP = 4
 # 拨号出错重试间隔
 ADSL_ERROR_CYCLE = 5
 
