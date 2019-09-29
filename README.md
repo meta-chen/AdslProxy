@@ -1,11 +1,20 @@
 ## 拨号主机设置
 
+### 0.使用前
+
+更新环境，否则可能有命令会出错
+
+```shell
+yum clean all
+yum update -y
+```
+
 ### 1.拨号上网
 
 根据云主机拨号教程拨号上网，示例命令：
 
-```
-sh ppp.sh
+```shell
+sh ppp.sh	#最新的并没有该文件，可直接使用adsl-start命令
 adsl-start
 ```
 
