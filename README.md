@@ -36,7 +36,7 @@ yum install -y tinyproxy
 vi /etc/tinyproxy/tinyproxy.conf
 ```
 
-取消注释
+注释
 
 ```
 Allow 127.0.0.1
