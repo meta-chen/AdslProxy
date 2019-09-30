@@ -14,7 +14,11 @@ from utils.getip import GetIP
 from apscheduler.schedulers.blocking import BlockingScheduler
 import os
 import logging
+import configparser
 
+logging.basicConfig(level=logging.DEBUG,
+                    format="%(asctime)s %(name)s %(levelname)s %(message)s",
+                    datefmt = '%Y-%m-%d  %H:%M:%S %a')    #注意月份和天数不要搞乱了，这里的格式化符与time模块相同
 class SendEmail:
     # 设置smtplib所需的参数
     # 下面的发件人，收件人是用于邮件传输的。
@@ -39,7 +43,8 @@ class SendEmail:
     # 收件人为多个收件人,通过join将列表转换为以;为间隔的字符串
     msg['To'] = ";".join(receiver)
     # msg['Date']='2012-3-16'
-    oldip = '114.250.102.239'
+    config = configparser.ConfigParser()
+    config.read("./conf.ini", encoding="utf-8")
 
     def __init__(self,password):
         self.password = password
@@ -49,16 +54,19 @@ class SendEmail:
         构造文字内容,2小时检测一次
         :return:
         '''
-
-        myip = GetIP()
-        if myip != self.oldip:
-            logging.info('IP has Changed to : {}'.format(myip))
-            self.oldip = myip
+        logging.info("Start Check IP")
+        checkip = GetIP()
+        myip = checkip.getip()
+        oldip = self.config.get('ip','oldip')
+        if myip != oldip:
+            logging.info('IP has Changed to : {} from {}'.format(myip,oldip))
+            self.config.set('ip','oldip',str(myip))
+            self.config.write(open("./conf.ini", "w"))
         else:
             logging.info("Nothing changed")
             return False
 
-        text = 'Host Ip has Changed :{}'.format(myip.getip())
+        text = 'Host Ip has Changed :{}'.format(myip)
         text_plain = MIMEText(text, 'plain', 'utf-8')
         self.msg.attach(text_plain)
 
@@ -80,7 +88,7 @@ class SendEmail:
         '''
         scheduler = BlockingScheduler()
         # 每2小时触发
-        scheduler.add_job(self.mailsender, 'interval', hours=2)
+        scheduler.add_job(self.mailsender, 'interval', days=1)
         scheduler.start()
 
 def main():

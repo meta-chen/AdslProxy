@@ -10,7 +10,6 @@ import os
 from utils.sendip import SendEmail
 import logging
 
-redisPasswd = os.getenv('REDISPASSWORD')
 emailPassword = os.getenv('163AUTHCODE')
 if __name__ == '__main__':
     sender = SendEmail(emailPassword)

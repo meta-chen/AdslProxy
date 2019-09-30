@@ -32,7 +32,8 @@ REDIS_PORT = 6379
 PROXY_KEY = 'adsl'
 
 # 测试URL
-TEST_URL = 'http://www.baidu.com'
+TEST_URL = 'https://www.zhihu.com/api/v4/members/kun-kun?include=allow_message,is_followed,' \
+           'is_following,is_org,is_blocking,employments,answer_count,follower_count,articles_count,gender,badge[?(type=best_answerer)].topics'
 
 # 测试超时时间
 TEST_TIMEOUT = 20
